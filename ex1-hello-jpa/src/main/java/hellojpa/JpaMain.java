@@ -14,6 +14,8 @@ import java.util.List;
         persist() 메서드는 디비에 데이터를 저장하는 것이 아닌 영속성 컨텍스에 저장한다.
     - 영속성 컨텍스트는 논리적인 개념이며 눈에 보이지 않다.
     - 엔티티 매니저를 통해서 영속성 컨텍스에 접근할 수 있다.
+    - 1차 캐시라고도 말함
+        사용자의 요청이 들어올 때 각각의 영속성 컨텍스트가 만들어지고 해당 요청이 끝나면 만들어진 영속성 컨텍스트는 삭제되어짐
 
     엔티티의 생명주기
     - 비영속: 영속성 컨텍스트와 전혀 관계가 없는 새로운 상태
@@ -153,18 +155,74 @@ public class JpaMain {
             tx.rollback();
         } finally {
             em.close();
-        }*/
+        }
+*/
 
+/*
         try {
             // Member 엔티티는 비영속 상태
             Member member = new Member();
-            member.setId(100L);
+            member.setId(101L);
             member.setName("HelloJPA");
 
             // 영속 상태
             System.out.println("=== BEFORE ===");
             em.persist(member);
             System.out.println("=== AFTER ===");
+
+            Member findMember = em.find(Member.class, 101L);
+
+            System.out.println("findMember.id = " + findMember.getId());
+            System.out.println("findMember.name = " + findMember.getName());
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+
+/*
+        try {
+            Member findMember1 = em.find(Member.class, 101L);
+            Member findMember2 = em.find(Member.class, 101L);
+
+            // 영속 엔티티의 동일성 보장
+            System.out.println("result = " + (findMember1 == findMember2));
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+
+/*
+        try {
+            // 영속
+            Member member1 = new Member(150L, "A");
+            Member member2 = new Member(160L, "B");
+
+            em.persist(member1);
+            em.persist(member2);
+
+            System.out.println("=======================");
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+
+        try {
+            // 영속
+            Member findMember = em.find(Member.class, 150L);
+            findMember.setName("ZZZZ");
+            System.out.println("=======================");
 
             tx.commit();
         } catch (Exception e) {
