@@ -38,6 +38,29 @@ import java.util.List;
             이 상태에서는 즉시 데이터베이스에서 삭제되는 것이 아니라, 트랜잭션이 커밋되는 시점에
             실제로 DELETE SQL이 실행되어 데이터베이스에서 제거된다.
 */
+
+/*
+    플러시: 영속성 컨텍스트의 변경 내용을 데이터베이스에 반영
+        플러시는 트랜잭션 커밋이 발생하면 자동적으로 발생되어짐
+            변경 감지
+            수정된 엔티티 쓰기 지연 SQL 저장소에 등록
+            쓰기 지연 SQL 저장소의 쿼리를 데이터베이스에 전송(등록, 수정, 삭제 쿼리)
+        스프링 부트에서 트랜잭션을 커밋할 때 JPA의 플러시가 먼저 발생한다. 이때 플러시는
+        데이터베이스 트랜잭션 커밋 자체를 의미하는 것이 아니라, 영속성 컨텍스트에서 변경 감지된
+        엔티티들의 변경 내용을 SQL로 만들어 데이터베이스에 전송하는 과정이다.
+        이후 해당 SQL들이 데이터베이스 트랜잭션 안에서 정상적으로 실행되고,
+        최종적으로 DB 트랜잭션 커밋이 성공해야 변경 내용이 실제로 확정된다.
+
+    영속성 컨텍스트를 플러시하는 방법
+    - em.flush() - 직접 호출
+    - 트랜잭션 커밋 - 플러시 자동 호출
+    - JPQL 쿼리 실행 - 플러시 자동 호출
+
+    플러시 모드 옵션
+    em.setFlushMode(FlushModeType.COMMIT)
+    - FlushModeType.AUTO: 커밋이나 쿼리를 실행할 때 플러시 (기본값)
+    - FlushModeType.COMMIT: 커밋할 때에만 플러시
+*/
 public class JpaMain {
 
     public static void main(String[] args) {
@@ -217,11 +240,32 @@ public class JpaMain {
             em.close();
         }
 */
-
+/*
         try {
             // 영속
             Member findMember = em.find(Member.class, 150L);
             findMember.setName("ZZZZ");
+            System.out.println("=======================");
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+        try {
+            // 영속
+            Member member = new Member(200L, "member200");
+            em.persist(member);
+
+            /*
+                이렇게 플러시가 발생된다고 해서 영속성 컨텍스트의 1차 캐시가 지워지지 않음
+                플러시가 발생하면 변경 감지된 내용이 SQL로 만들어져 DB에 전달되고 실행된다.
+                하지만 이 변경은 아직 DB 트랜잭션 안에서만 적용된 상태이며, 최종 반영은 commit이 성공해야 이루어진다.
+                만약 commit 전에 예외가 발생해 rollback되면, flush로 실행된 SQL 결과도 함께 취소된다.
+            */
+            em.flush();
             System.out.println("=======================");
 
             tx.commit();
