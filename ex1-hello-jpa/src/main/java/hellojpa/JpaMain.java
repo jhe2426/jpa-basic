@@ -254,20 +254,39 @@ public class JpaMain {
             em.close();
         }
 */
+/*
         try {
             // 영속
             Member member = new Member(200L, "member200");
             em.persist(member);
 
-            /*
-                이렇게 플러시가 발생된다고 해서 영속성 컨텍스트의 1차 캐시가 지워지지 않음
-                플러시가 발생하면 변경 감지된 내용이 SQL로 만들어져 DB에 전달되고 실행된다.
-                하지만 이 변경은 아직 DB 트랜잭션 안에서만 적용된 상태이며, 최종 반영은 commit이 성공해야 이루어진다.
-                만약 commit 전에 예외가 발생해 rollback되면, flush로 실행된 SQL 결과도 함께 취소된다.
-            */
+
+            이렇게 플러시가 발생된다고 해서 영속성 컨텍스트의 1차 캐시가 지워지지 않음
+            플러시가 발생하면 변경 감지된 내용이 SQL로 만들어져 DB에 전달되고 실행된다.
+            하지만 이 변경은 아직 DB 트랜잭션 안에서만 적용된 상태이며, 최종 반영은 commit이 성공해야 이루어진다.
+            만약 commit 전에 예외가 발생해 rollback되면, flush로 실행된 SQL 결과도 함께 취소된다.
+
             em.flush();
             System.out.println("=======================");
 
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+        try {
+            // 영속
+            Member member = em.find(Member.class, 150L);
+            member.setName("AAAAA");
+
+            // 준영속
+            em.detach(member);
+
+            Member member2 = em.find(Member.class, 150L);
+
+            System.out.println("=======================");
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
