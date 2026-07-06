@@ -276,6 +276,7 @@ public class JpaMain {
             em.close();
         }
 */
+/*
         try {
             // 영속
             Member member = em.find(Member.class, 150L);
@@ -293,6 +294,7 @@ public class JpaMain {
         } finally {
             em.close();
         }
+*/
 
         emf.close();
     }

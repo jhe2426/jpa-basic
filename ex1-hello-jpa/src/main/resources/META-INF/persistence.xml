@@ -32,7 +32,7 @@
                 테스트 서버, 스테이징과 운영 서버에는 validate 또는 none
                     스테이징: 운영 서버에 배포하기 전에, 운영 환경과 최대한 비슷하게 만들어서 마지막으로 테스트하는 환경
             -->
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
 
