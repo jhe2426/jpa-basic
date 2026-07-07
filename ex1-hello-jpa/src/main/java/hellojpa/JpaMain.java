@@ -296,6 +296,58 @@ public class JpaMain {
         }
 */
 
+/*
+        // IDENTITY 전략일 떄 실행한 코드
+        try {
+
+            MemberV2 member = new MemberV2();
+            member.setUsername("C");
+
+            System.out.println("==========");
+            em.persist(member);
+            System.out.println("member.id = " + member.getId());
+            System.out.println("==========");
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+
+        // SEQUENCE 전략일 떄 실행한 코드
+        try {
+
+            MemberV2 member1 = new MemberV2();
+            member1.setUsername("A");
+
+            MemberV2 member2 = new MemberV2();
+            member2.setUsername("B");
+
+            MemberV2 member3 = new MemberV2();
+            member3.setUsername("C");
+
+            System.out.println("==============");
+
+            em.persist(member1);
+            em.persist(member2);
+            em.persist(member3);
+
+
+            System.out.println("member1 = " + member1.getId());
+            System.out.println("member2 = " + member2.getId());
+            System.out.println("member3 = " + member3.getId());
+
+            System.out.println("==============");
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+
         emf.close();
     }
 }
