@@ -2,13 +2,13 @@ package hellojpa;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "member")
-@SequenceGenerator(
-    name = "MEMBER_SEQ_GENERATOR",
-    sequenceName = "MEMBER_SEQ", // 매핑할 데이터베이스 시퀀스 이름
-    initialValue = 1, allocationSize = 50
-)
+//@Entity
+//@Table(name = "member")
+//@SequenceGenerator(
+//    name = "MEMBER_SEQ_GENERATOR",
+//    sequenceName = "MEMBER_SEQ", // 매핑할 데이터베이스 시퀀스 이름
+//    initialValue = 1, allocationSize = 50
+//)
 
 /*
 @TableGenerator(

@@ -1,5 +1,7 @@
 package hellojpa;
 
+import hellojpa.domain.Member;
+import hellojpa.domain.Team;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -315,7 +317,7 @@ public class JpaMain {
             em.close();
         }
 */
-
+/*
         // SEQUENCE 전략일 떄 실행한 코드
         try {
 
@@ -347,7 +349,92 @@ public class JpaMain {
         } finally {
             em.close();
         }
+*/
+/*
+        // 객체를 테이블에 맞추어 모델링 (외래 키 식별자를 직접 다룸)
+        try {
 
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeamId(team.getId());
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+
+            Long findTeamId = findMember.getTeamId();
+            Team findTeam = em.find(Team.class, findTeamId);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+/*
+        // 객체 지향 모델링 (연관관계 저장)
+        try {
+
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+*//*
+            영속성 컨텍스트에 Team이 저장이 되어 있기 때문에  Member findMember = em.find(Member.class, member.getId()); 이 코드 실행 시
+            select 쿼리문이 DB에 날라가지 않는데 잘 조회되는지 확인해보고 싶으면 아래와 같이 em.flush()를 통해서 DB와 싱크를 맞추고 em.clear()를
+            통해 영속성 컨텍스트에 저장되어 있는 Team의 값을 지우면(초기화) select 쿼리문이 나가는 것을 확인할 수 있다.
+            em.flush();
+            em.clear();
+*//*
+            Member findMember = em.find(Member.class, member.getId());
+
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam.getName());
+            
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+
+ */
+
+        // 객체 지향 모델링 (연관관계 수정)
+        try {
+
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam.getName());
+
+            Team newTeam = em.find(Team.class, 100L);
+            findMember.setTeam(newTeam);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
         emf.close();
     }
 }
