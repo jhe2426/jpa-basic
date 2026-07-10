@@ -408,7 +408,7 @@ public class JpaMain {
         }
 
  */
-
+/*
         // 객체 지향 모델링 (연관관계 수정)
         try {
 
@@ -435,6 +435,36 @@ public class JpaMain {
         } finally {
             em.close();
         }
+*/
+
+        try {
+
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member findMember = em.find(Member.class, member.getId());
+            List<Member> members = findMember.getTeam().getMembers();
+
+            for (Member m : members) {
+                System.out.println("member.Name() = " + m.getName());
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+
         emf.close();
     }
 }
