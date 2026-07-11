@@ -436,6 +436,7 @@ public class JpaMain {
             em.close();
         }
 */
+/*
 
         try {
 
@@ -464,6 +465,193 @@ public class JpaMain {
         } finally {
             em.close();
         }
+*/
+/*
+
+        // 양방향 매핑 시 가장 많이 하는 실수 (연관관계 주인의 값을 입력하지 않음)
+        try {
+            Member member = new Member();
+            member.setName("member1");
+            em.persist(member);
+
+            Team team = new Team();
+            team.setName("TeamA");
+            team.getMembers().add(member);
+            em.persist(team);
+
+            em.flush();
+            em.clear();
+
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+/*
+
+        // 올바르게 양방향 매핑하는 경우 (JPA 입장으로 올바른 코드)
+        try {
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+
+/*
+        // 양방향 매핑 시 연관관계 주인의 값을 입력해야 한다. (순수한 객체 관계를 고려하면 항상 양쪽 다 값을 입력해야 한다.)
+        *//*
+            양방향 연관관계 주의
+            - 순수 객체 상태를 고려해서 항상 양쪽에 값을 설정해야 한다.
+            - 연관관계 편의 메서드를 생성하기
+            - 양방향 매핑 시에 무한 루프를 조심
+                예: toString(), lombok, JSON 생성 라이브러리
+        *//*
+        try {
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            *//*
+                team.getMembers().add(member); 이렇게 양쪽 다 값을 입력하지 않으면 발생하는 문제
+                    em.flush(); em.clear();를 해버리면 문제가 없지만
+                1. 영속성 컨텍스트, 1차 캐시에 값들이 존재하므로 Team findTeam = em.find(Team.class, team.getId()); 이 코드를 만나게 되면
+                    영속성 컨텍스트에서 Team의 값을 찾게 되는데 이때 문제점은 member의 값이 커밋이 되면 db에 반영이 되면 외래키를 설정해놨기 때문에
+                    member의 값이 존재하지만 해당 트랜잭션 내부에서는 Team의 members의 값은 null이 저장되게 됨
+                2. 테스트 케이스 작성할 때, JPA를 사용하지 않는 단위 테스트에서 값들이 잘 들어가는지를
+                    확인을 하는데 한 쪽에만 값을 입력하면 Team의 members의 값이 null이 되는 문제
+            *//*
+            team.getMembers().add(member);
+
+//            em.flush();
+//            em.clear();
+
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+
+            System.out.println("============");
+            for (Member m : members) {
+                System.out.println("m.getName() = " + m.getName());
+            }
+            System.out.println("============");
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+
+/*
+        // 양방향 매핑 - 연관관계 편의 메서드를 사용하여 양쪽 객체의 값을 할당
+        // 편의 메서드를 어느 객체에 작성할지는 정해서 작성하면 됨 (양쪽에 편의 메서드가 존재하면 문제를 야기시킬 수 있기 때문에 한 쪽에 존재해야함)
+        try {
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            *//*
+                void changeTeam(Team team) {
+                    this.team = team;
+                    team.getMembers().add(this);
+                }
+            *//*
+//            member.changeTeam(team);
+            em.persist(member);
+
+            team.addMember(member);
+
+//            team.getMembers().add(member);
+
+//            em.flush();
+//            em.clear();
+
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+
+            System.out.println("============");
+            for (Member m : members) {
+                System.out.println("m.getName() = " + m.getName());
+            }
+            System.out.println("============");
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+
+        // 양방향 매핑 - toString() 무한 루프 예제
+        /*
+            무한 루프를 조심하는 방법
+            - lombok을 사용하더라도 toString() 애노테이션을 사용하지 않기
+            - JSON 생성 라이브러리를 사용할 때에는 반드시 컨트롤러에는 엔티티를 반환하지 않는다.
+                컨트롤러에서 엔티티를 반환하면 발생할 수 있는 문제 2가지
+                    1. 무한 루프에 걸릴 수 있음
+                    2. 엔티티가 변경될 시 API 스펙이 변경이 됨(반환되는 데이터의 값들이 변경이 된다는 것)
+        */
+        try {
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+
+
+            em.persist(member);
+
+            team.addMember(member);
+
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+
+            System.out.println("============");
+            // StackOverflowError 발생
+//            System.out.println("team = " + findTeam);
+            System.out.println("============");
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+        
+        /*
+            양방향 매핑 정리
+            - 단반향 매핑만으로도 이미 연관관계 매핑은 완료
+                처음에 프로젝트를 설계를 하고 엔티티를 설정할 때에는 무조건 전부 다 단방향 매핑만 하고 양방향 매핑은 필요한 관계에서만 매핑하기
+            - 양방향 매핑은 반대 방향으로 조회(객체 그래프 탐색) 기능이 추가된 것 뿐
+            - JPQL에서 역방향으로 탐색할 일이 많음
+            - 단방향 매핑을 잘하고 양방향은 필요할 때 추가해도 됨 (테이블에 영향을 주지 않기 때문에)
+        */
 
         emf.close();
     }
