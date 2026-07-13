@@ -1,10 +1,8 @@
 package hellojpa;
 
-import hellojpa.domain.Member;
-import hellojpa.domain.Team;
+import hellojpa.domain2.Member2;
+import hellojpa.domain2.Team2;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 /*
     EntityManagerFactory는 사용자의 요청이 올 때마다 EntityManager를 생성하고 EntityManager는 데이터베이스의 커넥션을 사용하여
@@ -606,16 +604,16 @@ public class JpaMain {
             em.close();
         }
 */
-
+/*
         // 양방향 매핑 - toString() 무한 루프 예제
-        /*
+        *//*
             무한 루프를 조심하는 방법
             - lombok을 사용하더라도 toString() 애노테이션을 사용하지 않기
             - JSON 생성 라이브러리를 사용할 때에는 반드시 컨트롤러에는 엔티티를 반환하지 않는다.
                 컨트롤러에서 엔티티를 반환하면 발생할 수 있는 문제 2가지
                     1. 무한 루프에 걸릴 수 있음
                     2. 엔티티가 변경될 시 API 스펙이 변경이 됨(반환되는 데이터의 값들이 변경이 된다는 것)
-        */
+        *//*
         try {
             Team team = new Team();
             team.setName("TeamA");
@@ -643,7 +641,8 @@ public class JpaMain {
         } finally {
             em.close();
         }
-        
+
+ */
         /*
             양방향 매핑 정리
             - 단반향 매핑만으로도 이미 연관관계 매핑은 완료
@@ -653,6 +652,27 @@ public class JpaMain {
             - 단방향 매핑을 잘하고 양방향은 필요할 때 추가해도 됨 (테이블에 영향을 주지 않기 때문에)
         */
 
+
+        try {
+
+            Member2 member = new Member2();
+            // 실무에서는 값을 할당할 때 setter을 사용하지 않고 생성자에서 완성이 되도록 빌더 패턴을 사용해서 값을 할당시킴
+            member.setName("member1");
+
+            em.persist(member);
+
+            Team2 team = new Team2();
+            team.setName("teamA");
+            team.getMembers().add(member);
+
+            em.persist(team);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
         emf.close();
     }
 }
