@@ -1,7 +1,7 @@
 package hellojpa;
 
-import hellojpa.domain2.Member2;
-import hellojpa.domain2.Team2;
+import hellojpa.domain.Member2;
+import hellojpa.domain.Team2;
 import jakarta.persistence.*;
 
 /*

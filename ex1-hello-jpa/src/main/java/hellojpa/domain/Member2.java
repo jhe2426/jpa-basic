@@ -1,8 +1,8 @@
-package hellojpa.domain2;
+package hellojpa.domain;
 
 import jakarta.persistence.*;
 
-@Entity
+//@Entity
 public class Member2 {
 
     @Id

@@ -1,4 +1,4 @@
-package hellojpa.domain2;
+package hellojpa.domain;
 
 import jakarta.persistence.*;
 
@@ -19,7 +19,7 @@ import java.util.List;
 
     - 일대다 단방향 매핑보다는 다대일 양방향 매핑을 사용하자
 */
-@Entity
+//@Entity
 public class Team2 {
 
     @Id @GeneratedValue
