@@ -26,7 +26,7 @@ import jakarta.persistence.*;
         - 장점: 주 테이블과 대상 테이블을 일대일에서 일대다 관계로 변경할 때 테이블 구조 유지
         - 단점: 프록시 기능의 한계로 지연 로딩으로 설정해도 항상 즉시 로딩이 됨
 */
-@Entity
+//@Entity
 public class Locker {
 
     @Id @GeneratedValue
