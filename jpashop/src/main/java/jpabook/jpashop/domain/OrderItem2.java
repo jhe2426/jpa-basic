@@ -2,8 +2,8 @@ package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 
-//@Entity
-public class OrderItem {
+@Entity
+public class OrderItem2 {
 
     @Id @GeneratedValue
     @Column(name = "ORDER_ITEM_ID")
@@ -11,11 +11,11 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private Order order;
+    private Order2 order;
 
     @ManyToOne
     @JoinColumn(name = "ITEM_ID")
-    private Item item;
+    private Item2 item;
 
     private int orderPrice;
 
@@ -29,19 +29,19 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Order getOrder() {
+    public Order2 getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(Order2 order) {
         this.order = order;
     }
 
-    public Item getItem() {
+    public Item2 getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public void setItem(Item2 item) {
         this.item = item;
     }
 

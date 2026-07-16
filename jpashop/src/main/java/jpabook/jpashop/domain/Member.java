@@ -18,7 +18,7 @@ public class Member {
 
     // 보편적으로는 Member에 orders에 대한 정보를 저장하여 양방향으로 매핑한다는 것은 설계를 어렵게 한 것이다. 예제를 통해서 양방향 매핑을 한 것
     @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
+    private List<Order2> orders = new ArrayList<>();
 
     public Long getId() {
         return id;

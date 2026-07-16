@@ -6,19 +6,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Entity
-//@Table(name = "ORDERS")
-public class Order {
-
-    /*
-        해당 엔티티는 객체 설계를 테이블 설계에 맞춘 방식임
-        테이블의 외래키를 객체에 그대로 가져옴
-            @Column(name = "MEMBER_ID")
-            private Long member
-        객체 그래프 탐색이 불가능
-            객체 그래프 탐색: 객체가 참조하고 있는 다른 객체를 점(.)으로 계속 따라가면서 조회하는 것
-                객체가 가진 참조를 따라 다른 객체로 이동하면서 데이터를 조회하는 것
-    */
+@Entity
+@Table(name = "ORDERS")
+public class Order2 {
 
     @Id @GeneratedValue
     @Column(name = "ORDER_ID")
@@ -28,15 +18,19 @@ public class Order {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @OneToOne
+    @JoinColumn(name = "DELIVERY_ID")
+    private Delivery delivery;
+
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem2> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public void addOrderItem(OrderItem orderItem) {
+    public void addOrderItem(OrderItem2 orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
