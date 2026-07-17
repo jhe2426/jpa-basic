@@ -2,6 +2,8 @@ package hellojpa;
 
 import hellojpa.domain.Member2;
 import hellojpa.domain.Team2;
+import hellojpa.inheritance.Item;
+import hellojpa.inheritance.Movie;
 import jakarta.persistence.*;
 
 /*
@@ -675,6 +677,33 @@ public class JpaMain {
             em.close();
         }
 */
+
+        try {
+
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과함께사라지다");
+            movie.setPrice(10000);
+
+            em.persist(movie);
+
+            em.flush();
+            em.clear();
+
+//            Movie findMovie = em.find(Movie.class, movie.getId());
+//            System.out.println("findMovie = " + findMovie);
+
+            // InheritanceType.TABLE_PER_CLASS 상속 전략의 한계
+            Item item = em.find(Item.class, movie.getId());
+            System.out.println("item = " + item); // 부모 클래스인 Item을 상속받은 모든 클래스(엔티티)들을 union하여 조회를 함
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
 
         emf.close();
     }
