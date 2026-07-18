@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "ORDERS")
-public class Order2 {
+public class Order2 extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "ORDER_ID")

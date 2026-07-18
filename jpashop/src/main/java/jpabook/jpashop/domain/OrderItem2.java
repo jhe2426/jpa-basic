@@ -3,7 +3,7 @@ package jpabook.jpashop.domain;
 import jakarta.persistence.*;
 
 @Entity
-public class OrderItem2 {
+public class OrderItem2 extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "ORDER_ITEM_ID")
