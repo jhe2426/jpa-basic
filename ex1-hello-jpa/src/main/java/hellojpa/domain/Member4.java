@@ -2,11 +2,12 @@ package hellojpa.domain;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member4 {
+public class Member4 extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -22,6 +23,12 @@ public class Member4 {
 
     @OneToMany(mappedBy = "member")
     private List<MemberProduct> memberProducts = new ArrayList<>();
+/*
+    private String createdBy;
+    private LocalDateTime createdDate;
+    private String lastModifiedBy;
+    private LocalDateTime lastModifiedDate;
+*/
 
     public Long getId() {
         return id;

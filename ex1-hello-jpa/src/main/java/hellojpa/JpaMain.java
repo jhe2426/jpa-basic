@@ -1,10 +1,13 @@
 package hellojpa;
 
 import hellojpa.domain.Member2;
+import hellojpa.domain.Member4;
 import hellojpa.domain.Team2;
 import hellojpa.inheritance.Item;
 import hellojpa.inheritance.Movie;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 /*
     EntityManagerFactory는 사용자의 요청이 올 때마다 EntityManager를 생성하고 EntityManager는 데이터베이스의 커넥션을 사용하여
@@ -677,7 +680,7 @@ public class JpaMain {
             em.close();
         }
 */
-
+/*
         try {
 
             Movie movie = new Movie();
@@ -697,6 +700,23 @@ public class JpaMain {
             // InheritanceType.TABLE_PER_CLASS 상속 전략의 한계
             Item item = em.find(Item.class, movie.getId());
             System.out.println("item = " + item); // 부모 클래스인 Item을 상속받은 모든 클래스(엔티티)들을 union하여 조회를 함
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+*/
+
+        try {
+
+            Member4 member = new Member4();
+            member.setName("user1");
+            member.setCreatedBy("kim");
+            member.setCreatedDate(LocalDateTime.now());
+
+            em.persist(member);
 
             tx.commit();
         } catch (Exception e) {
