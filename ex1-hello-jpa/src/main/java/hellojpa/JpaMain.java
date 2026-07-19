@@ -1,10 +1,7 @@
 package hellojpa;
 
-import hellojpa.domain.Member2;
 import hellojpa.domain.Member4;
-import hellojpa.domain.Team2;
-import hellojpa.inheritance.Item;
-import hellojpa.inheritance.Movie;
+import hellojpa.domain.Team;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -724,7 +721,6 @@ public class JpaMain {
         } finally {
             em.close();
         }
-
         emf.close();
     }
 }
