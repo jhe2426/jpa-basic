@@ -2,7 +2,7 @@ package hellojpa.proxy.domain;
 
 import jakarta.persistence.*;
 
-@Entity
+//@Entity
 public class Member {
 
     @Id
