@@ -111,7 +111,7 @@ public class AssociationMain {
             em.clear();
 
             /*
-                SQL: select * from Member -> Member는 Team이 즉시 로딩이므로 select * from Team where TEAM_ID = xxx 이 쿼리문도 추가로 조회되게 됨SQL: select * from Member -> Member는 Team이 즉시 로딩이므로 select * from Team where TEAM_ID = xxx 이 쿼리문도 추가로 나가게 됨
+                SQL: select * from Member -> Member는 Team이 즉시 로딩이므로 select * from Team where TEAM_ID = xxx 이 쿼리문도 추가로 조회되게 됨
                 - Member 목록 조회 후 각 Member가 참조하는 Team을 조회하게 위한 추가 SELECT가 실행된다.
                 - 서로 다른 Team을 참조하는 Member가 많을수록 Team 초회 쿼리가 반될 수 있으며, 이를 N+1 문제라고 한다.
             */
