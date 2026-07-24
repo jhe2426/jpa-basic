@@ -77,6 +77,7 @@ public class ValueTypeMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
+/*
         try {
 
             Member member = new Member();
@@ -93,6 +94,113 @@ public class ValueTypeMain {
         } finally {
             em.close();
         }
+*/
+/*
+
+        */
+/*
+            임베디드 타입의 같은 값을 가지는 타입을 여러 엔티티에서 공유하면 위허함
+            공유하는 임베디드 타입을 수정하게 되면 공유되는 모든 엔티티에 변경된 값으로 저장이 되므로
+            이러한 부작용(side effect)이 발생
+            따라서 값 타입의 실제 인스턴스인 값을 공유하는 것은 위험
+            대신 값(인스턴스)를 복사해서 사용
+
+        *//*
+
+        try {
+            Address address = new Address("city", "street", "10000");
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(address);
+            em.persist(member);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setHomeAddress(address);
+            em.persist(member2);
+
+            member.getHomeAddress().setCity("newCity"); // member, member2의 모든 엔티티에서 값이 변경됨
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+*/
+/*
+
+        */
+/*
+           인스턴스를 공유하지 않고 값(인스턴스)을 복사해서 사용
+
+            객체 타입의 한계
+            - 항상 값을 복사해서 사용하면 공유 참조로 인해 발생하는 부작용을 피할 수 있다.
+            - 문제는 임베디드 타입처럼 직접 정의한 값 타입은 자바의 기본 타입이 아니라 객체 타입이다.
+            - 자바 기본 타입은 값을 대입하면 값을 복사한다.
+            - 반면, 객체 타입은 참조 값을 직접 대입하는 것을 막을 방법이 없다.
+            - 객체의 공유 참조는 피할 수 없다.
+
+            이를 해결하고자 불변 객체로 만들면 됨
+            불변 객체
+            - 객체 타입을 수정할 수 없게 만들면 부작용을 원천 차단
+            - 값 타입은 불변 객체(immutable object)로 설계해야함
+            - 불변 객체: 생성 시점 이후 절대 값을 변경할 수 없는 객체
+            - 생정자로만 값을 설정하고 수정자(Setter)를 만들지 않으면 됨
+                또는 해당 값 타입 내부에서만 변경할 수 있게 Setter 메서드의 접근 제어자를 private으로 선언하면 됨
+            - 참고: Integer, String은 자바가 제공하는 대표적인 불변 객체
+        *//*
+
+        try {
+            Address address = new Address("city", "street", "10000");
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(address);
+            em.persist(member);
+
+            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setHomeAddress(copyAddress);
+            em.persist(member2);
+
+            member.getHomeAddress().setCity("newCity");
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+*/
+
+        // 불변 객체인 값 타입의 값을 변경하고 싶을 때 어떻게 해야하나?
+        try {
+            Address address = new Address("city", "street", "10000");
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(address);
+            em.persist(member);
+
+            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
+
+            member.setHomeAddress(newAddress);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+
 
         emf.close();
     }
