@@ -4,7 +4,7 @@ import hellojpa.valuetype.domain.embedded.Address;
 import hellojpa.valuetype.domain.embedded.Period;
 import jakarta.persistence.*;
 
-@Entity
+//@Entity
 public class Member {
 
     @Id
