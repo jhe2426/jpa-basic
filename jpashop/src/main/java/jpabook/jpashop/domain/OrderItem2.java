@@ -2,7 +2,7 @@ package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 
-@Entity
+//@Entity
 public class OrderItem2 extends BaseEntity {
 
     @Id @GeneratedValue

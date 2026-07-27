@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import static jakarta.persistence.FetchType.*;
 
-@Entity
+//@Entity
 public class Delivery extends BaseEntity {
 
     @Id @GeneratedValue
