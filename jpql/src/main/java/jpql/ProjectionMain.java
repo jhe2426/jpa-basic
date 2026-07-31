@@ -59,7 +59,7 @@ public class ProjectionMain {
                     .getResultList();
             이렇게 작성하면 JPQL에는 조인문이 명시되어 있지 않지만, m.team처럼 Member에서 Team으로 연관관계 경로를 탐색하므로
             Team을 가져오기 위해 필수적으로 조인 SQL문이 나가게 된다.
-            위와 같이 해당 조인을 명시적으로 보이도록 작성하지 않으면 코드 유지보수를 할 때
+            위와 같이 해당 조인을 명시적으로 보이도록 작성하지 않으면 코드를 유지보수할 때
             한눈에 어떤 쿼리문이 나가는지 알아보기 힘들기 때문에, 아래와 같이 JPQL에도 join문을 직접 작성해주는 것이 좋다.
             위의 같은 JPQL문은 묵시적 조인이다.
 */
@@ -74,7 +74,7 @@ public class ProjectionMain {
                     .getResultList();
 
 
-            // Object[] 타입으로 조회
+            // Query 타입으로 조회
             List resultList = em.createQuery("select distinct m.username, m.age from Member m")
                     .getResultList();
 
@@ -84,7 +84,7 @@ public class ProjectionMain {
             System.out.println("age = " + objectResult[1]);
 
 
-            // Query 타입으로 조회
+            // Object[] 타입으로 조회
             List<Object[]> resultList2 = em.createQuery("select distinct m.username, m.age from Member m")
                     .getResultList();
 
