@@ -50,6 +50,7 @@ import java.util.List;
     - SELECT 절도 가능(하이버네이트에서 지원)
     - FROM 절의 서브 쿼리는 현재 JPQL에서 불가능
         - 조인으로 풀 수 있으면 풀어서 해결
+        - 하이버네이트6 부터는 FROM 절의 서브쿼리를 지원함
 */
 public class SubQueryMain {
     public static void main(String[] args) {

@@ -75,7 +75,7 @@ import java.util.List;
     사용자 정의 함수 호출
     - 하이버네이트는 사용전 방언에 추가해야 한다.
         - 사용하는 DB 방언을 상속받고, 사용자 정의 함수를 등록한다.
-            select function('group_concat', i.name_ from Item i
+            select function('group_concat', i.name) from Item i
 */
 public class FunctionMain {
     public static void main(String[] args) {
