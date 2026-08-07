@@ -38,7 +38,7 @@ import java.util.List;
 
     경로 표현식 - 예제
     - select o.member.team from Order o -> 성공 (묵지적 조인이 2번 일어남)
-    - select t.members from Team -> 성공
+    - select t.members from Team t -> 성공
     - select t.members.username from Team t -> 실패 (컬렉션 값 연관 경로은 탐색이 불가능)
     - select m.username from Team t join t.members m -> 성공
 
