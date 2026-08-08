@@ -40,9 +40,9 @@ import java.util.List;
         2. 애플리케이션에서 엔티티 중복 제거
             같은 식별자를 가진 엔티티를 제거해줌
     - select distinct t from Team t join fetch t.members
-        [SQL]
+        [JPQL]
             select distinct t from Team t join fetch t.members where t.name = '팀A'
-                SQL에 DISTINCT를 추가하지만 행 데이터 전부가 다 같은 행은 존재하지 않으므로 SQL 결과에서는 중복 제거가 실패
+                SQL에 DISTINCT를 추가하지만 행 데이터 전부가 다 같은 행은 존재하지 않으므로 SQL 결과에서는 중복 제거 일어나지 않음
                     1 팀A 1 1 회원1
                     1 팀A 2 1 회원2
                     2 팀B 3 2 회원3
